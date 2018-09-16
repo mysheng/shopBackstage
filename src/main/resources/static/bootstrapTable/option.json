@@ -1,0 +1,86 @@
+[
+      {
+          "Name": "研发部",
+          "Level": "01",
+          "Des": "产品研发",
+          "strCreatetime": "2015-10-01"
+      },
+      {
+        "Name": "运营部",
+        "Level": "02",
+        "Des": "产品上线及维护",
+        "strCreatetime": "2015-10-02"
+      },
+      {
+        "Name": "人事部",
+        "Level": "03",
+        "Des": "人员管理",
+        "strCreatetime": "2015-10-03"
+      },
+      {
+        "Name": "自动化管理部",
+        "Level": "04",
+        "Des": "产品自动化管理",
+        "strCreatetime": "2015-10-04"
+      },
+      {
+        "Name": "研发部",
+        "Level": "01",
+        "Des": "产品研发",
+        "strCreatetime": "2015-10-01"
+      },
+      {
+        "Name": "研发部",
+        "Level": "01",
+        "Des": "产品研发",
+        "strCreatetime": "2015-10-01"
+      },
+      {
+        "Name": "研发部",
+        "Level": "01",
+        "Des": "产品研发",
+        "strCreatetime": "2015-10-01"
+      },
+       {
+         "Name": "研发部",
+         "Level": "01",
+         "Des": "产品研发",
+         "strCreatetime": "2015-10-01"
+       },
+     {
+       "Name": "研发部",
+       "Level": "01",
+       "Des": "产品研发",
+       "strCreatetime": "2015-10-01"
+     },
+     {
+       "Name": "研发部",
+       "Level": "01",
+       "Des": "产品研发",
+       "strCreatetime": "2015-10-01"
+     },
+     {
+       "Name": "研发部",
+       "Level": "01",
+       "Des": "产品研发",
+       "strCreatetime": "2015-10-01"
+     },
+     {
+       "Name": "研发部",
+       "Level": "01",
+       "Des": "产品研发",
+       "strCreatetime": "2015-10-01"
+     },
+     {
+       "Name": "研发部",
+       "Level": "01",
+       "Des": "产品研发",
+       "strCreatetime": "2015-10-01"
+     },
+     {
+       "Name": "研发部",
+       "Level": "01",
+       "Des": "产品研发",
+       "strCreatetime": "2015-10-01"
+     }
+]

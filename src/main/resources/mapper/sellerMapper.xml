@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mysheng.office.mapper.SellerMapper">
+    <select id="querySellers" resultType="com.mysheng.office.model.Seller">
+        SELECT * FROM seller
+    </select>
+    <select id="querySellerById" resultType="com.mysheng.office.model.Seller">
+        SELECT * FROM seller WHERE seller_id=#{sellerId}
+    </select>
+    <insert id="insertSeller" useGeneratedKeys="true" keyProperty="sellerId" keyColumn="seller_id" parameterType="com.mysheng.office.model.Seller">
+        INSERT INTO seller (seller_num,shop_name,head_image,phone,telephone,seller_name,seller_password,
+        seller_type,bus_lic_num,real_name,address,id_num,status,file_path,cover_charge,remark,coordinate)
+        VALUES
+        (#{sellerNum},#{shopName},#{headImage},#{phone},#{telephone},#{sellerName},#{sellerPassword},
+        #{sellerType},#{busLicNum},#{realName},#{address},#{idNum},#{status},#{filePath},#{coverCharge},#{remark},#{coordinate})
+    </insert>
+    <update id="updateSeller" parameterType="com.mysheng.office.model.Seller">
+        UPDATE seller
+        <set>
+            <if test="sellerNum!=null">seller_num=#{sellerNum},</if>
+            <if test="shopName!=null">shop_name=#{shopName},</if>
+            <if test="headImage!=null">head_image=#{headImage},</if>
+            <if test="phone!=null">phone=#{phone},</if>
+            <if test="telephone!=null">telephone=#{telephone},</if>
+            <if test="sellerName!=null">seller_name=#{sellerName},</if>
+            <if test="sellerPassword!=null">seller_password=#{sellerPassword},</if>
+            <if test="sellerType!=null">seller_type=#{sellerType},</if>
+            <if test="busLicNum!=null">bus_lic_num=#{busLicNum},</if>
+            <if test="realName!=null">real_name=#{realName},</if>
+            <if test="address!=null">address=#{address},</if>
+            <if test="idNum!=null">id_num=#{idNum},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="filePath!=null">file_path=#{filePath},</if>
+            <if test="coverCharge!=null">cover_charge=#{coverCharge},</if>
+            <if test="expiry!=null">expiry=#{expiry},</if>
+            <if test="remark!=null">remark=#{remark},</if>
+            <if test="coordinate!=null">coordinate=#{coordinate}</if>
+        </set>
+
+        WHERE seller_id=#{sellerId}
+    </update>
+    <select id="selectOldPassword" resultType="String" >
+        SELECT seller_password FROM seller WHERE seller_id=#{sellerId}
+    </select>
+    <select id="selectPassword" resultType="String" >
+        SELECT seller_password FROM seller WHERE phone=#{phone}
+    </select>
+    <update id="updateSellerPassword">
+        UPDATE seller SET seller_password=#{sellerPassword} WHERE seller_id=#{sellerId}
+    </update>
+    <delete id="deleteSeller" >
+        DELETE FROM seller WHERE seller_id=#{sellerId}
+    </delete>
+</mapper>

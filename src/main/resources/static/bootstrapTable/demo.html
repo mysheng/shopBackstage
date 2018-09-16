@@ -1,0 +1,152 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>bootstrap datatable demo</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-table.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-editable.css" rel="stylesheet" />
+
+    <style>
+        *{margin:0;padding:0}
+    </style>
+</head>
+<body>
+<div id="toolbar" class="btn-group" >
+    <button id="btn_add" type="button" class="btn btn-success">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+    </button>
+    <button id="btn_edit" type="button" class="btn btn-info">
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>修改
+    </button>
+    <button id="uploadImg" type="button" class="btn btn-warning">
+        <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>上传图片
+    </button>
+    <button id="btn_delete" type="button" class="btn btn-danger">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+    </button>
+</div>
+<div class="container">
+    <table id="table2"></table>
+</div>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-table.js"></script>
+<script src="js/bootstrap-table-zh-CN.js"></script>
+<script src="js/tableExport.js"></script>
+<script src="js/bootstrap-table-export.min.js"></script>
+<script src="js/bootstrap-table-editable.min.js"></script>
+<script src="js/bootstrap-editable.js"></script>
+<script>
+    $(function () {
+        var oTable = new TableInit();
+        oTable.Init(); 
+    })
+    var TableInit = function () {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $('#table2').bootstrapTable({
+                url: 'option.json',         //请求后台的URL（*）
+                method: 'post',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: true,                     //是否启用排序
+                sortOrder: "desc",                   //排序方式
+                queryParams: oTableInit.queryParams,//传递参数（*）
+                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 20, 30, 35],        //可供选择的每页的行数（*）
+                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                contentType: "application/json;charset=UTF-8",
+                showPaginationSwitch:true,
+                showColumns: true,                  //是否显示所有的列
+                showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                height: 600,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "Name",                     //每一行的唯一标识，一般为主键列
+                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子
+                showExport: true,                     //是否显示导出
+                exportDataType: "all",              //basic', 'all', 'selected'.
+                responseHandler :oTableInit.responseHandler,
+                rowStyle:oTableInit.rowStyle,
+                onEditableSave:oTableInit.onEditableSave,
+                columns: [{
+                    checkbox: true
+                },{
+                    field: 'Name',
+                    title: '名称', sortable: true,align:'center',width:'25%',
+                    editable:true
+                }, {
+                    field: 'Level',
+                    title: '编号',sortable: true,align:'center',width:'25%',
+                    editable:false
+                }, {
+                    field: 'Des',
+                    title: '部门',align:'center',sortable: true,width:'25%',
+                    editable:true
+                }, {
+                    field: 'strCreatetime',sortable: true,width:'25%',
+                    title: '创建时间',align:'center',
+                    editable:true
+                }]
+            });
+        };
+        oTableInit.onEditableSave=function (field, row, oldValue, $el) {
+            console.log(row);
+
+        }
+        //得到查询的参数
+        oTableInit.responseHandler = function (res) {
+            if(res==null){
+                res=[]
+            }
+            return res;
+        };
+        //数据加载前处理
+        oTableInit.queryParams = function (params) {
+            // var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+            //     // limit: params.limit,   //页面大小
+            //     // offset: params.offset,  //页码
+            //     goodsName: $("#goodsNames").val(),
+            //     goodsType: $("#goodsTypes").val()
+            // };
+            // return JSON.stringify(temp);
+        };
+        oTableInit.rowStyle = function rowStyle( row, index) {
+
+            var strclass = "";
+            // if (row.repertory<10) {
+            //     strclass = 'danger';
+            // }else {
+            //     return {};
+            // }
+            // else if (row.repertory >10) {
+            //         strclass = 'active';
+            //     }else if (index%5 == 2) {
+            //         strclass = 'info';
+            //     }else if (index%5 == 3) {
+            //         strclass = 'warning';
+            //     }else if (index%5 == 4) {
+            //         strclass = 'success';
+            //     }
+            return { classes: strclass }
+
+        }
+
+        return oTableInit;
+    };
+    
+</script>
+
+</body>
+</html>

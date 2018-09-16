@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据双向绑定KnockoutJS实现增删改查解决方案（二）</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-table.min.css" rel="stylesheet" />
+
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-table.js"></script>
+    <script src="js/bootstrap-table-zh-CN.js"></script>
+
+    <script src="knockout/knockout-3.4.0.min.js"></script>
+    <script src="knockout/knockout.mapping-latest.js"></script>
+    <script src="knockout/knockout.bootstraptable.js"></script>
+    <script src="knockout/index1.js"></script>
+</head>
+<body>
+<div class="panel-body" style="padding-bottom:0;">
+    <div class="panel panel-default">
+        <div class="panel-heading">查询条件</div>
+        <div class="panel-body">
+            <form id="formSearch" class="form-horizontal">
+                <div class="form-group" style="margin-top:15px">
+                    <label class="control-label col-sm-1" for="name">名称</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="name">
+                    </div>
+                    <label class="control-label col-sm-1" for="id">ID</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="id">
+                    </div>
+                    <div class="col-sm-4" style="text-align:left;">
+                        <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toolbar" class="btn-group" >
+        <button id="btn_add" type="button" class="btn btn-success">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+        </button>
+        <button id="btn_edit" type="button" class="btn btn-info">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>修改
+        </button>
+        <button id="btn_delete" type="button" class="btn btn-danger">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+        </button>
+    </div>
+    <table id="tb_dept" data-bind="myBootstrapTable:$root">
+        <thead>
+        <tr>
+            <th data-checkbox="true"></th>
+            <th data-field="Name">部门名称</th>
+            <th data-field="Level">部门级别</th>
+            <th data-field="Des">描述</th>
+            <th data-field="strCreatetime">创建时间</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">操作</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="txt_departmentname">部门名称</label>
+                    <input type="text" name="txt_departmentname" data-bind="value:Name" class="form-control" id="txt_departmentname" placeholder="部门名称">
+                </div>
+                <div class="form-group">
+                    <label for="txt_departmentlevel">部门级别</label>
+                    <input type="text" name="txt_departmentlevel" data-bind="value:Level" class="form-control" id="txt_departmentlevel" placeholder="部门级别">
+                </div>
+                <div class="form-group">
+                    <label for="txt_des">描述</label>
+                    <input type="text" name="txt_des" data-bind="value:Des" class="form-control" id="txt_des" placeholder="描述">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

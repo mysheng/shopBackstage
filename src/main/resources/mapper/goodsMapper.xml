@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mysheng.office.mapper.GoodsMapper">
+    <select id="queryGoods"  resultType="com.mysheng.office.model.Goods">
+        SELECT * FROM goods
+    </select>
+    <select id="queryGoodsById" resultType="com.mysheng.office.model.Goods">
+        SELECT * FROM goods WHERE goods_id=#{goodsId}
+    </select>
+    <select id="findGoodsImageUrl" resultType="String">
+        SELECT image_url FROM goods WHERE goods_id=#{goodsId}
+    </select>
+    <insert id="insertGoods" useGeneratedKeys="true" keyProperty="goodsId" keyColumn="goods_id" parameterType="com.mysheng.office.model.Goods">
+        INSERT INTO goods(goods_type,seller_num,goods_name,price,old_price,goods_describe,norms,image_url,goods_num,repertory,status) VALUES
+        (#{goodsType},#{sellerNum},#{goodsName},#{price},#{oldPrice},#{goodsDescribe},#{norms},#{imageUrl},#{goodsNum},#{repertory},#{status})
+    </insert>
+    <update id="updateGoods" parameterType="com.mysheng.office.model.Goods">
+        UPDATE goods
+        <set>
+            <if test="goodsType!=null">goods_type=#{goodsType},</if>
+            <if test="sellerNum!=null">seller_num=#{sellerNum},</if>
+            <if test="goodsName!=null">goods_name=#{goodsName},</if>
+            <if test="price!=0">price=#{price},</if>
+            <if test="oldPrice!=0">old_price=#{oldPrice},</if>
+            <if test="createDate!=null">create_date=#{createDate},</if>
+            <if test="updateDate!=null">update_date=#{updateDate},</if>
+            <if test="goodsDescribe!=null">goods_describe=#{goodsDescribe},</if>
+            <if test="imageUrl!=null">image_url=#{imageUrl},</if>
+            <if test="goodsNum!=null">goods_num=#{goodsNum},</if>
+            <if test="repertory!=null">repertory=#{repertory},</if>
+            <if test="status!=null">status=#{status}</if>
+        </set>
+
+        WHERE goods_id=#{goodsId}
+    </update>
+    <delete id="deleteGoods" parameterType="int">
+        DELETE FROM goods WHERE goods_id in
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,26 @@
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 3MB
+      max-request-size: 3MB
+  jackson:
+    time-zone: GMT+8
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/services_data?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: mysheng
+
+mybatis:
+  type-aliases-package: com.mysheng.office.model
+  mapper-locations: classpath:mapper/**.xml
+  config-location: classpath:mybatis-config.xml
+server:
+  port: 9090
+  servlet:
+    context-path: /office
+
+logging:
+  level:
+   com.mysheng.office.mapper: trace

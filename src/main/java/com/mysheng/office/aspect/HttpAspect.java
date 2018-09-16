@@ -20,6 +20,9 @@ public class HttpAspect {
     @Pointcut("execution(public * com.mysheng.office.controller.UserController.*(..))")
     public void log(){
         String str="测试";
+
+
+
     }
     @Before("log()")
     public void doBefore(JoinPoint joinPoint){

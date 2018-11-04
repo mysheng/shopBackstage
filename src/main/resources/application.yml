@@ -10,7 +10,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/services_data?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
-    password: mysheng
+    password: root
 
 mybatis:
   type-aliases-package: com.mysheng.office.model
@@ -24,3 +24,7 @@ server:
 logging:
   level:
    com.mysheng.office.mapper: trace
+
+
+UPLOAD_FILE_DIR: D:/image/
+UPLOAD_FILE_HOST: http://localhost:7041

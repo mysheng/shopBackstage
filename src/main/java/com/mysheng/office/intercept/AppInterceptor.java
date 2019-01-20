@@ -1,21 +1,24 @@
 package com.mysheng.office.intercept;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import com.mysheng.office.base.Results;
 import com.mysheng.office.base.SystemCache;
 import com.mysheng.office.util.JsonUtil;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
  * 接口业务拦截器
  */
+@Component
 public class AppInterceptor extends HandlerInterceptorAdapter {
 	/**
 	 * 业务不需要拦截的方法正则
 	 */
-	public static final String NO_INTERCEPTOR = ".*/((user/login)|(user/register)).*";
+	public static final String NO_INTERCEPTOR = ".*/((user/login)|(user/register)|(home/index)).*";
 	
 	
 	@Override

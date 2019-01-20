@@ -26,5 +26,14 @@ logging:
    com.mysheng.office.mapper: trace
 
 
-UPLOAD_FILE_DIR: D:/image/
-UPLOAD_FILE_HOST: http://localhost:7041
+#UPLOAD_FILE_DIR: D:/image/
+#UPLOAD_FILE_HOST: http://localhost:7041
+
+#file.staticAccessPath: /api/**
+#file.uploadFolder: d:image/
+
+#spring.mvc.static-path-pattern: /static/**
+# 默认值为 classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+#spring.resources.static-locations: d:image/
+spring.mvc.static-path-pattern: /api/**
+spring.resources.static-locations: file:D://image/

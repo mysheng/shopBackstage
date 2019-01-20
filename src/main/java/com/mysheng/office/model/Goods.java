@@ -6,11 +6,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Goods implements Serializable {
-    private  Integer goodsId;
-    private  String goodsType;
-    private  String sellerNum;
-    private  String goodsName;
-    private  String goodsNum;
+    private Integer goodsId;
+    private String goodsType;
+    private String sellerNum;
+    private String goodsName;
+    private String goodsNum;
     private float price;
     private float oldPrice;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
@@ -22,6 +22,7 @@ public class Goods implements Serializable {
     private String imageUrl;
     private Integer repertory;
     private Integer status;
+    private Integer salesVolume;
 
     public Integer getRepertory() {
         return repertory;
@@ -121,7 +122,6 @@ public class Goods implements Serializable {
     }
 
 
-
     public String getNorms() {
         return norms;
     }
@@ -137,4 +137,13 @@ public class Goods implements Serializable {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    public Integer getSalesVolume() {
+        return salesVolume;
+    }
+
+    public void setSalesVolume(Integer salesVolume) {
+        this.salesVolume = salesVolume;
+    }
 }
+

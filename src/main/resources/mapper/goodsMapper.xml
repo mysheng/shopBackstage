@@ -4,6 +4,9 @@
     <select id="queryGoods"  resultType="com.mysheng.office.model.Goods">
         SELECT * FROM goods
     </select>
+    <select id="queryGoodsPage"  resultType="com.mysheng.office.model.Goods">
+        SELECT * FROM goods order by sales_volume desc limit #{pageNo},#{pageSize}
+    </select>
     <select id="queryGoodsById" resultType="com.mysheng.office.model.Goods">
         SELECT * FROM goods WHERE goods_id=#{goodsId}
     </select>

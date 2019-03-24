@@ -1,6 +1,5 @@
 package com.mysheng.office.mapper;
 import com.mysheng.office.model.Goods;
-import com.mysheng.office.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -47,4 +46,6 @@ public interface GoodsMapper {
      * @return
      */
     String findGoodsImageUrl(int goodsId);
+
+    List<Goods> queryGoodsPage(@Param("pageNo") Integer pageNo,@Param("pageSize") Integer pageSize);
 }

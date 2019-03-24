@@ -48,4 +48,13 @@ public class GoodsServiceImpl implements GoodsService{
     public String findGoodsImageUrl(int goodsId) {
         return goodsMapper.findGoodsImageUrl(goodsId);
     }
+
+    @Override
+    public List<Goods> queryGoodsPage(Integer pageNo, Integer pageSize) {
+        Integer pageNumber = 0;
+        if(pageNo > 1){
+            pageNumber = (pageNo-1)*pageSize;
+        }
+        return goodsMapper.queryGoodsPage(pageNumber,pageSize);
+    }
 }

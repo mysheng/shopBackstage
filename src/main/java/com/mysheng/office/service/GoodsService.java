@@ -1,6 +1,7 @@
 package com.mysheng.office.service;
 
 import com.mysheng.office.model.Goods;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -46,4 +47,5 @@ public interface GoodsService {
      */
     String findGoodsImageUrl(int goodsId);
 
+    List<Goods> queryGoodsPage(@Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize);
 }

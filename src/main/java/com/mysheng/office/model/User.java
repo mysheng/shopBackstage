@@ -7,22 +7,17 @@ import java.util.Date;
 public class User {
     private Integer userId;
     private String userName;
-    private String userPassword;
+    private String password;
     private String phone;
     private String headImage;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
-    private Date regTime;
+    private Date createTime;
     private String remark;
+    private String idCard;
+    private String cardImage;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
+    private Date updateTime;
 
-    public Integer getVipStatus() {
-        return vipStatus;
-    }
-
-    public void setVipStatus(Integer vipStatus) {
-        this.vipStatus = vipStatus;
-    }
-
-    private Integer vipStatus;
 
     public Integer getUserId() {
         return userId;
@@ -40,12 +35,12 @@ public class User {
         this.userName = userName;
     }
 
-    public String getUserPassword() {
-        return userPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPhone() {
@@ -60,16 +55,16 @@ public class User {
         return headImage;
     }
 
-    public void setHeadImage(String imageUrl) {
-        this.headImage = imageUrl;
+    public void setHeadImage(String headImage) {
+        this.headImage = headImage;
     }
 
-    public Date getRegTime() {
-        return regTime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setRegTime(Date regTime) {
-        this.regTime = regTime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public String getRemark() {
@@ -78,5 +73,29 @@ public class User {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+    public String getCardImage() {
+        return cardImage;
+    }
+
+    public void setCardImage(String cardImage) {
+        this.cardImage = cardImage;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

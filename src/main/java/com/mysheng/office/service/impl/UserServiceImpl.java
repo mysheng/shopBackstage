@@ -5,9 +5,11 @@ import com.mysheng.office.exception.CommentException;
 import com.mysheng.office.mapper.UserMapper;
 import com.mysheng.office.model.User;
 import com.mysheng.office.service.UserService;
+import com.mysheng.office.util.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int insertUser(User user) {
+        user.setCreateTime(new Date());
+        user.setUpdateTime(new Date());
+        user.setPassword(MD5.convertToMD5(user.getPassword()));
         return userMapper.insertUser(user);
     }
 
@@ -60,5 +65,9 @@ public class UserServiceImpl implements UserService {
         return 0;
     }
 
+    @Override
+   public  List<User> queryList(User temp){
+        return userMapper.queryList(temp);
+    }
 
 }

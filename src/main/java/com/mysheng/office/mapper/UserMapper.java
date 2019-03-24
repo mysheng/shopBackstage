@@ -58,4 +58,7 @@ public interface UserMapper {
      */
     String selectPassword(String phone);
 
+
+    List<User> queryList(User temp);
+
 }

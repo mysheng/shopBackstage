@@ -55,4 +55,6 @@ public interface UserService {
      */
     int loginInfo(String phone,String password);
 
+    List<User> queryList(User temp);
+
 }

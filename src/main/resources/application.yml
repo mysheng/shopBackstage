@@ -12,6 +12,10 @@ spring:
     username: root
     password: root
 
+  mvc:
+    static-path-pattern:
+
+
 mybatis:
   type-aliases-package: com.mysheng.office.model
   mapper-locations: classpath:mapper/**.xml
@@ -26,6 +30,7 @@ logging:
    com.mysheng.office.mapper: trace
 
 
+
 #UPLOAD_FILE_DIR: D:/image/
 #UPLOAD_FILE_HOST: http://localhost:7041
 
@@ -37,3 +42,4 @@ logging:
 #spring.resources.static-locations: d:image/
 spring.mvc.static-path-pattern: /api/**
 spring.resources.static-locations: file:D://image/
+

@@ -11,6 +11,8 @@ spring:
     url: jdbc:mysql://localhost:3306/services_data?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
     password: mysheng
+  mvc:
+    static-path-pattern:
 
 mybatis:
   type-aliases-package: com.mysheng.office.model
@@ -24,3 +26,5 @@ server:
 logging:
   level:
    com.mysheng.office.mapper: trace
+spring.mvc.static-path-pattern: /image/**
+spring.resources.static-locations: file:/Users/mayansheng/mysheng/

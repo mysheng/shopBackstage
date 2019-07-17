@@ -33,15 +33,15 @@ public class uploadController {
     public @ResponseBody Result uploadImg(@RequestParam("goodsId") int goodsId,@RequestParam("file") MultipartFile[] file, HttpServletRequest request) {
 
         if (file.length<1) {
-            return ResultUtil.error(0,"文件为空！");
+            return ResultUtil.error(1,"文件为空！");
         }
 
-        boolean isImage=uploadImage.imageUpload(goodsId,file);
-        if(isImage){
-            ResultUtil.error(1,"文件上传成功");
-        }
+//        boolean isImage=uploadImage.imageUpload(goodsId,file);
+//        if(isImage){
+//            ResultUtil.error(0,"文件上传成功");
+//        }
 
-        return ResultUtil.error(0,"文件上传失败");
+        return ResultUtil.error(1,"文件上传失败");
     }
 
 }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mysheng.office.mapper.CouponMapper">
+    <select id="queryCoupon" parameterType="java.util.Map" resultType="com.mysheng.office.model.CouponModel">
+        SELECT * FROM coupons
+        <where>
+            <if test="couponName!= null">AND coupon_name LIKE concat('%',#{couponName},'%')</if>
+            <if test="couponType!= null">AND coupon_type=#{couponType}</if>
+            <if test="status!= null">AND status=#{status}</if>
+        </where>
+        ORDER BY create_date DESC
+    </select>
+    <select id="queryCouponById" resultType="com.mysheng.office.model.CouponModel">
+        SELECT * FROM coupons WHERE id=#{id}
+    </select>
+    <insert id="insertCoupon"  parameterType="com.mysheng.office.model.CouponModel">
+        INSERT INTO coupons (id,shop_id,user_id,coupon_name,coupon_amount,coupon_type,limit_amount,limit_name,
+        status,per_limit,coupon_count,use_count,reserve_count,begin_time,expire_time,comments)
+        VALUES
+        (#{id},#{shopId},#{userId},#{couponName},#{couponAmount},#{couponType},#{limitAmount},#{limitName},
+        #{status},#{perLimit},#{couponCount},#{useCount},#{reserveCount},#{beginTime},#{expireTime},#{comments})
+    </insert>
+    <update id="updateCoupon" parameterType="com.mysheng.office.model.CouponModel">
+        UPDATE coupons
+        <set>
+            <if test="couponName!=null">coupon_name=#{couponName},</if>
+            <if test="couponAmount!=null">coupon_amount=#{couponAmount},</if>
+            <if test="couponType!=null">coupon_type=#{couponType},</if>
+            <if test="limitAmount!=null">limit_amount=#{limitAmount},</if>
+            <if test="limitName!=null">limit_name=#{limitName},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="perLimit!=null">per_limit=#{perLimit},</if>
+            <if test="beginTime!=null">begin_time=#{beginTime},</if>
+            <if test="expireTime!=null">expire_time=#{expireTime},</if>
+            <if test="comments!=null">comments=#{comments}</if>
+        </set>
+
+        WHERE id=#{id}
+    </update>
+    <update id="updateCouponCount" parameterType="java.util.Map">
+        UPDATE coupons
+        <set>
+            <if test="couponCount!=null">coupon_count=#{couponCount},</if>
+            <if test="useCount!=null">use_amount=#{useCount},</if>
+            <if test="reserveCount!=null">reserve_count=#{reserveCount}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+    <delete id="deleteCoupon" >
+        DELETE FROM coupons WHERE id=#{id}
+    </delete>
+    <!--用户已领取的优惠券-->
+    <select id="queryUserCoupons" resultType="com.mysheng.office.model.CouponModel">
+        SELECT * FROM coupons_user WHERE user_id=#{userId}
+    </select>
+    <select id="queryUserCouponsByCouponId" resultType="com.mysheng.office.model.CouponModel">
+        SELECT * FROM coupons_user WHERE user_id=#{userId} AND coupon_id=#{couponId}
+    </select>
+    <select id="queryCouponsByStatus" resultType="com.mysheng.office.model.CouponModel">
+        SELECT * FROM coupons_user WHERE user_id=#{userId} AND status=#{status}
+    </select>
+    <insert id="userCollarCoupons"  parameterType="com.mysheng.office.model.CouponModel">
+        INSERT INTO coupons_user (id,user_id,shop_id,coupon_id,coupon_name,coupon_amount,coupon_type,limit_amount,limit_name,
+        status,begin_time,expire_time,create_date,comments)
+        VALUES
+        (#{id},#{userId},#{shopId},#{couponId},#{couponName},#{couponAmount},#{couponType},#{limitAmount},#{limitName},
+        #{status},#{beginTime},#{expireTime},#{createDate},#{comments})
+    </insert>
+    <delete id="deleteUserCoupon" >
+        DELETE FROM coupons_user WHERE id=#{id}
+    </delete>
+</mapper>

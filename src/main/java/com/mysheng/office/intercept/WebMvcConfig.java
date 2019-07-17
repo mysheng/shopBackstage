@@ -17,5 +17,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // 添加拦截器
         registry.addInterceptor(securityInterceptor());
     }
+//    @Bean
+//    public AppInterceptor securityInterceptor() {
+//        return new AppInterceptor();
+//    }
+//
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        // 添加拦截器
+//        registry.addInterceptor(securityInterceptor());
+//    }
 
 }

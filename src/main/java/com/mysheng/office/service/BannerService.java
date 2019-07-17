@@ -1,8 +1,10 @@
 package com.mysheng.office.service;
 
-import com.mysheng.office.model.Banner;
+import com.mysheng.office.model.BannerModel;
+
+import java.util.Date;
 import java.util.List;
 
 public interface BannerService {
-    List<Banner> selectIndexBanner(String date);
+    List<BannerModel> queryBanner(Date date);
 }

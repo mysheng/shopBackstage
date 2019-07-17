@@ -1,8 +1,14 @@
 package com.mysheng.office.service.impl;
 
+import com.mysheng.office.mapper.GoodsDataMapper;
 import com.mysheng.office.mapper.GoodsMapper;
 import com.mysheng.office.model.Goods;
+import com.mysheng.office.model.GoodsData;
 import com.mysheng.office.service.GoodsService;
+import com.mysheng.office.util.PinYinUtil;
+import com.mysheng.office.util.RegexUtils;
+import com.mysheng.office.util.UUIDUtil;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,48 +19,91 @@ import java.util.List;
 public class GoodsServiceImpl implements GoodsService{
     @Autowired
     private GoodsMapper goodsMapper;
+    @Autowired
+    private GoodsDataMapper goodsDataMapper;
     @Override
     public List<Goods> queryGoods() {
         return goodsMapper.queryGoods();
     }
 
     @Override
-    public Goods queryGoodsById(int goodsId) {
+    public List<Goods> searchGoods(String searchName) {
+        if(RegexUtils.checkLetter(searchName)){
+
+            return goodsMapper.queryGoodsByPinyin(searchName.toUpperCase());
+        }
+        return goodsMapper.queryGoodsByName(searchName);
+    }
+    @Override
+    public Goods queryGoodsById(String goodsId) {
         return goodsMapper.queryGoodsById(goodsId);
     }
 
     @Override
     public int insertGoods(Goods goods) {
-        Date date=new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-        String goodsNum=df.format(date)+Math.ceil(Math.random()*9+1)*100000;
-        goods.setGoodsNum(goodsNum);
+
+        goods.setId(UUIDUtil.getUUID());
+        goods.setGoodsPinyin(PinYinUtil.toFirstChar(goods.getGoodsName()));
+
         return goodsMapper.insertGoods(goods);
     }
 
     @Override
     public int updateGoods(Goods goods) {
-        Date date=new Date();
-        goods.setUpdateDate(date);
         return goodsMapper.updateGoods(goods);
     }
 
     @Override
-    public int deleteGoods(int[] goodsIds) {
+    public int deleteGoods(List<String>goodsIds) {
         return goodsMapper.deleteGoods(goodsIds);
     }
 
     @Override
-    public String findGoodsImageUrl(int goodsId) {
+    public String findGoodsImageUrl(String goodsId) {
         return goodsMapper.findGoodsImageUrl(goodsId);
     }
 
     @Override
-    public List<Goods> queryGoodsPage(Integer pageNo, Integer pageSize) {
-        Integer pageNumber = 0;
-        if(pageNo > 1){
-            pageNumber = (pageNo-1)*pageSize;
-        }
-        return goodsMapper.queryGoodsPage(pageNumber,pageSize);
+    public int insertGoodsData(GoodsData goodsData) {
+        goodsData.setId(UUIDUtil.getUUID());
+        goodsData.setGoodsPinyin(PinYinUtil.toFirstChar(goodsData.getGoodsName()));
+        return goodsDataMapper.insertGoodsData(goodsData);
     }
+
+    @Override
+    public List<GoodsData> queryGoodsData(String goodsPinyin,String goodsNorms,String goodsUnit) {
+
+        return goodsDataMapper.queryGoodsData(goodsPinyin,goodsNorms,goodsUnit);
+    }
+
+    @Override
+    public List<GoodsData> searchGoodsData(String searchName) {
+        if(RegexUtils.checkLetter(searchName)){
+
+            return goodsDataMapper.queryGoodsDataByPinyin(searchName.toUpperCase());
+        }
+        return goodsDataMapper.queryGoodsDataByName(searchName);
+    }
+
+    @Override
+    public GoodsData queryGoodsDataById(String goodsId) {
+        return goodsDataMapper.queryGoodsDataById(goodsId);
+    }
+
+    @Override
+    public int updateGoodsData(GoodsData goodsData) {
+        return goodsDataMapper.updateGoodsData(goodsData);
+    }
+
+    @Override
+    public int deleteGoodsData(List<String> goodsIds) {
+        return goodsDataMapper.deleteGoodsData(goodsIds);
+    }
+
+    @Override
+    public GoodsData queryGoodsDataByCode(String goodsCode) {
+        return goodsDataMapper.queryGoodsDataByCode(goodsCode);
+    }
+
+
 }

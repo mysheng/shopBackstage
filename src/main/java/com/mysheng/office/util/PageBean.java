@@ -8,11 +8,11 @@ public class PageBean<T> {
     // 每页显示的总条数
     private Integer pageSize = 10;
      // 总条数
-     private Integer totalNum;
+     private long totalNum;
     // 是否有下一页
     private Integer isMore;
      // 总页数
-    private Integer totalPage;
+    private long totalPage;
     // 开始索引
     private Integer startIndex;
     // 分页结果
@@ -22,7 +22,7 @@ public class PageBean<T> {
         super();
     }
 
-    public PageBean(Integer currentPage, Integer pageSize, Integer totalNum) {
+    public PageBean(Integer currentPage, Integer pageSize, long totalNum) {
         super();
          this.currentPage = currentPage;
             this.pageSize = pageSize;
@@ -31,6 +31,7 @@ public class PageBean<T> {
              this.startIndex = (this.currentPage-1)*this.pageSize;
             this.isMore = this.currentPage >= this.totalPage?0:1;
       }
+
 
     public Integer getCurrentPage() {
         return currentPage;
@@ -48,7 +49,7 @@ public class PageBean<T> {
         this.pageSize = pageSize;
     }
 
-    public Integer getTotalNum() {
+    public long getTotalNum() {
         return totalNum;
     }
 
@@ -64,7 +65,7 @@ public class PageBean<T> {
         this.isMore = isMore;
     }
 
-    public Integer getTotalPage() {
+    public long getTotalPage() {
         return totalPage;
     }
 

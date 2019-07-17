@@ -332,7 +332,7 @@ public class MD5 {
 	public static void main(String args[]) {
 		// 如果没有输入参数
 		if (Array.getLength(args) == 0) {
-			System.out.println("result:" + MD5.convertToMD5("满足你的需求"));
+			System.out.println("result:" + MD5.convertToMD5("15701570988").length());
 		} else
 			System.out.println("source:" + args[0] + "---result:"
 					+ MD5.convertToMD5(args[0]));

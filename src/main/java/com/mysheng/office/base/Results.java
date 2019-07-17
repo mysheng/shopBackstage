@@ -17,8 +17,8 @@ import java.util.Collection;
  */
 public class Results implements Serializable {
 	private static final long serialVersionUID = -5781099453947447091L;
-	public static final String SUCCESS = "1";
-	public static final String FAILURE = "0";
+	public static final String SUCCESS = "0";
+	public static final String FAILURE = "1";
 
 	/** 状态 */
 	private String status = "";
@@ -119,7 +119,7 @@ public class Results implements Serializable {
 	 * @param errorCode
 	 * @return Result
 	 */
-	public static Results failure(String msg, Error error) {
+	public static Results failure(String msg, Error errorCode) {
 		return new Results(FAILURE, msg);
 	}
 

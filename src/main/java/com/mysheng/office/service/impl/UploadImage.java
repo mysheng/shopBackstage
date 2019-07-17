@@ -17,7 +17,7 @@ public class UploadImage {
     private String imgUrl;
     @Autowired
     private GoodsService goodsService;
-    public boolean imageUpload( int goodsId,MultipartFile[] file){
+    public boolean imageUpload( String goodsId,MultipartFile[] file){
 
         imgUrl=goodsService.findGoodsImageUrl(goodsId);
             if("null".equals(imgUrl)){
@@ -61,8 +61,8 @@ public class UploadImage {
 
 
         Goods goods=new Goods();
-        goods.setGoodsId(goodsId);
-        goods.setImageUrl(imgUrl);
+//        goods.setGoodsId(goodsId);
+//        goods.setImageUrl(imgUrl);
         goodsService.updateGoods(goods);
         return true;
     }

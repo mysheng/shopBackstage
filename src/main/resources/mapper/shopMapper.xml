@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mysheng.office.mapper.ShopMapper">
+    <select id="queryShop" resultType="com.mysheng.office.model.ShopModel">
+        SELECT * FROM shop
+    </select>
+    <select id="queryShopById" resultType="com.mysheng.office.model.ShopModel">
+        SELECT * FROM shop WHERE id=#{id}
+    </select>
+    <select id="queryShopByUser" resultType="com.mysheng.office.model.ShopModel">
+        SELECT * FROM shop WHERE user_id=#{id}
+    </select>
+    <insert id="insertShop"  parameterType="com.mysheng.office.model.ShopModel">
+        INSERT INTO shop (id,user_id,shop_name,shop_pinyin,shop_intro,telephone,shop_code,shop_logo,shop_scope,freight,address,
+        brand_id,brand_name,brand_pinyin,notice,score,longitude,latitude,status,
+        province,province_code,city,city_code,county,county_code,create_date,comments)
+        VALUES
+        (#{id},#{userId},#{shopName},#{shopPinyin},#{shopIntro},#{telephone},#{shopCode},#{shopLogo},#{shopScope},#{freight},#{address},
+        #{brandId},#{brandName},#{brandPinyin},#{notice},#{score},#{longitude},#{latitude},#{status},
+        #{province},#{provinceCode},#{city},#{cityCode},#{county},#{countyCode},#{createDate},#{comments})
+    </insert>
+    <update id="updateShop" parameterType="com.mysheng.office.model.ShopModel">
+        UPDATE shop
+        <set>
+            <if test="shopName!=null">shop_name=#{shopName},</if>
+            <if test="shopPinyin!=null">shop_pinyin=#{shopPinyin},</if>
+            <if test="shopIntro!=null">shop_intro=#{shopIntro},</if>
+            <if test="telephone!=null">telephone=#{telephone},</if>
+            <if test="shopCode!=null">shop_code=#{shopCode},</if>
+            <if test="shopLogo!=null">shop_logo=#{shopLogo},</if>
+            <if test="freight!=0">freight=#{freight},</if>
+            <if test="shopScope!=0">shop_scope=#{shopScope},</if>
+            <if test="address!=null">address=#{address},</if>
+            <if test="brandId!=null">brand_id=#{brandId},</if>
+            <if test="brandName!=null">brand_name=#{brandName},</if>
+            <if test="brandPinyin!=null">brand_pinyin=#{brandPinyin},</if>
+            <if test="notice!=null">notice=#{notice},</if>
+            <if test="score!=0">score=#{score},</if>
+            <if test="longitude!=0">longitude=#{longitude},</if>
+            <if test="latitude!=0">latitude=#{latitude},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="province!=null">province=#{province},</if>
+            <if test="provinceCode!=null">province_code=#{provinceCode},</if>
+            <if test="city!=null">city=#{city},</if>
+            <if test="cityCode!=null">city_code=#{cityCode},</if>
+            <if test="county!=null">county=#{county},</if>
+            <if test="countyCode!=null">county_code=#{countyCode},</if>
+            <if test="comments!=null">comments=#{comments}</if>
+        </set>
+
+        WHERE id=#{id}
+    </update>
+    <update id="updateShopStatus">
+         UPDATE shop SET status=#{status} WHERE id=#{id}
+    </update>
+    <delete id="deleteShop" >
+        DELETE FROM shop WHERE id=#{id}
+    </delete>
+</mapper>

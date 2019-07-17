@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mysheng.office.mapper.UserModelMapper">
+    <select id="queryUsers" resultType="com.mysheng.office.model.UserModel">
+        SELECT * FROM users
+    </select>
+    <select id="queryUserById" resultType="com.mysheng.office.model.UserModel">
+        SELECT * FROM users WHERE id=#{userId}
+    </select>
+    <select id="queryUserPhoneById" resultType="String">
+        SELECT phone_num FROM users WHERE id=#{userId}
+    </select>
+    <select id="queryUserByPhone" resultType="com.mysheng.office.model.UserModel">
+        SELECT * FROM users WHERE phone_num=#{phone}
+    </select>
+    <insert id="insertUser"  parameterType="com.mysheng.office.model.UserModel">
+        INSERT INTO users(id,login_name,nick_name,phone_num,password,avatar,user_name,birthday,id_card,id_code,status,province,city,county,
+        open_id,session_key,email,user_type,comments,create_date) VALUES
+        (#{id},#{loginName},#{nickName},#{phoneNum},#{password},#{avatar},#{userName},#{birthday},#{idCard},#{idCode},#{status},#{province},#{city},#{county},
+         #{openId},#{sessionKey},#{email},#{userType},#{comments},#{createDate})
+    </insert>
+    <update id="updateUser" parameterType="com.mysheng.office.model.UserModel">
+        UPDATE users
+        <set>
+            <if test="loginName!=null">login_name=#{loginName},</if>
+            <if test="nickName!=null">nick_name=#{nickName},</if>
+            <if test="phoneNum!=null">phone_num=#{phoneNum},</if>
+            <if test="password!=null">password=#{password},</if>
+            <if test="avatar!=null">avatar=#{avatar},</if>
+            <if test="userName!=null">user_name=#{userName},</if>
+            <if test="birthday!=null">birthday=#{birthday},</if>
+            <if test="idCard!=null">id_card=#{idCard},</if>
+            <if test="idCode!=null">id_code=#{idCode},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="province!=null">province=#{province},</if>
+            <if test="city!=null">city=#{city},</if>
+            <if test="county!=null">county=#{county},</if>
+            <if test="email!=null">email=#{email}</if>
+            <if test="userType!=null">user_type=#{userType}</if>
+            <if test="comments!=null">comments=#{comments}</if>
+        </set>
+        WHERE phone_num=#{phoneNum}
+    </update>
+    <select id="selectOldPassword" resultType="String" >
+        SELECT password FROM users WHERE phone_num=#{phone}
+    </select>
+    <select id="selectPassword" resultType="String" >
+        SELECT password FROM users WHERE phone_num=#{phone}
+    </select>
+    <update id="updateUserPassword">
+        UPDATE users SET password=#{userPassword} WHERE phone_num=#{phone}
+    </update>
+    <delete id="deleteUser" >
+        DELETE FROM users WHERE user_id=#{userId}
+    </delete>
+    <select id="queryList" parameterType="com.mysheng.office.model.UserModel" resultType="com.mysheng.office.model.UserModel">
+        select * FROM users WHERE phone=#{phone}
+
+    </select>
+
+</mapper>

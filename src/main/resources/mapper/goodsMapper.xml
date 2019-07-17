@@ -4,41 +4,55 @@
     <select id="queryGoods"  resultType="com.mysheng.office.model.Goods">
         SELECT * FROM goods
     </select>
-    <select id="queryGoodsPage"  resultType="com.mysheng.office.model.Goods">
-        SELECT * FROM goods order by sales_volume desc limit #{pageNo},#{pageSize}
-    </select>
+
     <select id="queryGoodsById" resultType="com.mysheng.office.model.Goods">
         SELECT * FROM goods WHERE goods_id=#{goodsId}
     </select>
-    <select id="findGoodsImageUrl" resultType="String">
-        SELECT image_url FROM goods WHERE goods_id=#{goodsId}
+    <select id="queryGoodsByName" parameterType="String" resultType="com.mysheng.office.model.Goods">
+        SELECT * FROM goods WHERE goods_name LIKE concat('%',#{searchName},'%')
     </select>
-    <insert id="insertGoods" useGeneratedKeys="true" keyProperty="goodsId" keyColumn="goods_id" parameterType="com.mysheng.office.model.Goods">
-        INSERT INTO goods(goods_type,seller_num,goods_name,price,old_price,goods_describe,norms,image_url,goods_num,repertory,status) VALUES
-        (#{goodsType},#{sellerNum},#{goodsName},#{price},#{oldPrice},#{goodsDescribe},#{norms},#{imageUrl},#{goodsNum},#{repertory},#{status})
+    <select id="queryGoodsByPinyin" parameterType="String" resultType="com.mysheng.office.model.Goods">
+        SELECT * FROM goods WHERE goods_pinyin LIKE concat('%',#{searchName},'%')
+    </select>
+
+    <insert id="insertGoods"  parameterType="com.mysheng.office.model.Goods">
+        INSERT INTO goods(id,shop_id,goods_num,goods_name,goods_pinyin,
+        type_code,type_name,goods_norms,goods_price,old_price,coupon_id,coupon,
+        reduce,reduce_amount,reduce_limit,status,stock,volume,goods_unit,
+        update_user_id,create_user_id,create_date,comments) VALUES
+        (#{id}, #{shopId},#{goodsNum},#{goodsName},#{goodsPinyin},
+       #{typeCode},#{typeName},#{goodsNorms},#{goodsPrice},#{oldPrice},#{couponId},#{coupon},
+       #{reduce},#{reduceAmount},#{reduceLimit},#{status},#{stock},#{volume},#{goodsUnit},
+       #{updateUserId},#{createUserId},#{createDate},#{comments})
     </insert>
     <update id="updateGoods" parameterType="com.mysheng.office.model.Goods">
         UPDATE goods
         <set>
-            <if test="goodsType!=null">goods_type=#{goodsType},</if>
-            <if test="sellerNum!=null">seller_num=#{sellerNum},</if>
-            <if test="goodsName!=null">goods_name=#{goodsName},</if>
-            <if test="price!=0">price=#{price},</if>
-            <if test="oldPrice!=0">old_price=#{oldPrice},</if>
-            <if test="createDate!=null">create_date=#{createDate},</if>
-            <if test="updateDate!=null">update_date=#{updateDate},</if>
-            <if test="goodsDescribe!=null">goods_describe=#{goodsDescribe},</if>
-            <if test="imageUrl!=null">image_url=#{imageUrl},</if>
             <if test="goodsNum!=null">goods_num=#{goodsNum},</if>
-            <if test="repertory!=null">repertory=#{repertory},</if>
-            <if test="status!=null">status=#{status}</if>
+            <if test="goodsName!=null">goods_name=#{goodsName},</if>
+            <if test="goodsPinyin!=null">goods_pinyin=#{goodsPinyin},</if>
+            <if test="typeCode!=null">type_code=#{typeCode},</if>
+            <if test="typeName!=null">type_name=#{typeName},</if>
+            <if test="goodsNorms!=null">goods_norms=#{goodsNorms},</if>
+            <if test="goodsPrice!=null">goods_price=#{goodsPrice},</if>
+            <if test="oldPrice!=null">old_price=#{oldPrice},</if>
+            <if test="couponId!=null">coupon_id=#{couponId},</if>
+            <if test="coupon!=null">coupon=#{coupon},</if>
+            <if test="reduce!=null">reduce=#{reduce},</if>
+            <if test="reduceAmount!=null">reduce_amount=#{reduceAmount},</if>
+            <if test="reduceLimit!=null">reduce_limit=#{reduceLimit},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="stock!=null">stock=#{stock},</if>
+            <if test="volume!=null">volume=#{volume},</if>
+            <if test="unitName!=null">goods_unit=#{goods_unit},</if>
+            <if test="updateUserId!=null">update_user_id=#{updateUserId},</if>
+            <if test="comments!=null">comments=#{comments}</if>
         </set>
-
-        WHERE goods_id=#{goodsId}
+        WHERE id=#{id}
     </update>
-    <delete id="deleteGoods" parameterType="int">
-        DELETE FROM goods WHERE goods_id in
-        <foreach collection="array" item="id" open="(" close=")" separator=",">
+    <delete id="deleteGoods" parameterType="String">
+        DELETE FROM goods WHERE id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
             #{id}
         </foreach>
     </delete>

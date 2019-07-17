@@ -8,44 +8,57 @@ import java.util.List;
 @Mapper
 public interface GoodsMapper {
     /**
-     * 查询全部用户
+     * 查询全部商品
      * @return
      */
     List<Goods> queryGoods();
 
     /**
-     * 根据用户id查询用户
+     * 根据id查询商品
      * @param goodsId
      * @return
      */
-    Goods queryGoodsById(int goodsId);
+    Goods queryGoodsById(String goodsId);
 
     /**
-     * 新增用户
+     * 根据商品名称模糊搜索支持拼音检索
+     * @param goodsName
+     * @return
+     */
+    List<Goods> queryGoodsByName(@Param("searchName") String goodsName);
+    /**
+     * 根据商品名称拼音检索
+     * @param goodsName
+     * @return
+     */
+    List<Goods> queryGoodsByPinyin(@Param("searchName") String goodsName);
+
+
+    /**
+     * 新增商品
      * @param goods
      * @return
      */
     int insertGoods(Goods goods);
 
     /**
-     * 根据用户id修改用户信息
+     * 根据商品id修改商品信息
      * @param goods
      * @return
      */
     int updateGoods(Goods goods);
     /**
-     * 根据用户id修改用户信息
+     * 根据商品id删除商品信息
      * @param ids
      * @return
      */
-    int deleteGoods(int[] ids);
+    int deleteGoods(List<String> ids);
 
     /**
      * 更具goodsId查询图片地址
      * @param goodsId
      * @return
      */
-    String findGoodsImageUrl(int goodsId);
+    String findGoodsImageUrl(String goodsId);
 
-    List<Goods> queryGoodsPage(@Param("pageNo") Integer pageNo,@Param("pageSize") Integer pageSize);
 }

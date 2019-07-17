@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mysheng.office.mapper.GoodsDataMapper">
+    <select id="queryGoodsData" resultType="com.mysheng.office.model.GoodsData">
+        SELECT * FROM goods_data
+        <where>
+            <if test="goodsPinyin!= null">AND goods_pinyin LIKE concat('%',#{goodsPinyin},'%')</if>
+            <if test="goodsNorms!= null">AND goods_norms=#{goodsNorms}</if>
+            <if test="goodsUnit!= null">AND goods_unit=#{goodsUnit}</if>
+        </where>
+    </select>
+    <select id="queryGoodsDataById" resultType="com.mysheng.office.model.GoodsData">
+        SELECT * FROM goods_data WHERE id=#{id}
+    </select>
+    <select id="queryGoodsDataByCode" resultType="com.mysheng.office.model.GoodsData">
+        SELECT * FROM goods_data WHERE goods_code=#{goodsCode}
+    </select>
+    <select id="queryGoodsDataByName" parameterType="String" resultType="com.mysheng.office.model.GoodsData">
+        SELECT * FROM goods_data WHERE goods_name LIKE concat('%',#{searchName},'%')
+    </select>
+    <select id="queryGoodsDataByPinyin" parameterType="String" resultType="com.mysheng.office.model.GoodsData">
+        SELECT * FROM goods_data WHERE goods_pinyin LIKE concat('%',#{searchName},'%')
+    </select>
+    <insert id="insertGoodsData"  parameterType="com.mysheng.office.model.GoodsData">
+        INSERT INTO goods_data(id,user_id,goods_name,goods_pinyin,
+        goods_code,goods_norms,goods_unit,create_date,comments) VALUES
+        (#{id}, #{userId},#{goodsName},#{goodsPinyin},
+       #{goodsCode},#{goodsNorms},#{goodsUnit},#{createDate},#{comments})
+    </insert>
+    <update id="updateGoodsData" parameterType="com.mysheng.office.model.GoodsData">
+        UPDATE goods_data
+        <set>
+            <if test="userId!=null">goods_num=#{userId},</if>
+            <if test="goodsName!=null">goods_name=#{goodsName},</if>
+            <if test="goodsPinyin!=null">goods_pinyin=#{goodsPinyin},</if>
+            <if test="goodsCode!=null">type_code=#{goodsCode},</if>
+            <if test="goodsNorms!=null">norms=#{goodsNorms},</if>
+            <if test="updateUserId!=null">update_user_id=#{updateUserId},</if>
+            <if test="comments!=null">comments=#{comments}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+    <delete id="deleteGoodsData" parameterType="String">
+        DELETE FROM goods_data WHERE id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,193 +1,198 @@
 package com.mysheng.office.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.StringUtil;
-import com.mysheng.office.base.BaseControllor;
-import com.mysheng.office.base.Errors;
-import com.mysheng.office.base.Results;
-import com.mysheng.office.base.SystemCache;
 import com.mysheng.office.model.Result;
-import com.mysheng.office.model.User;
-import com.mysheng.office.service.UserService;
-import com.mysheng.office.util.*;
+import com.mysheng.office.model.TokenModel;
+import com.mysheng.office.model.UserModel;
+import com.mysheng.office.service.RedisService;
+import com.mysheng.office.service.TokenService;
+import com.mysheng.office.service.UserModelService;
+import com.mysheng.office.util.HttpRequestUtils;
+import com.mysheng.office.util.PageBean;
+import com.mysheng.office.util.ResultUtil;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/user")
-public class UserController extends BaseControllor{
+public class UserController {
     protected Logger logger = LoggerFactory.getLogger(getClass());
     @Value("UPLOAD_FILE_DIR")
     private static String uploadDir;
     @Value("UPLOAD_FILE_HOST")
     private static String uploadHost;
+    @Value("${wx.appid}")
+    private String appid;
+    @Value("${wx.secret}")
+    private String secret;
+
     @Autowired
-    private UserService userService;
+    private UserModelService userModelService;
+
+    @Autowired
+    private TokenService tokenService;
+
+    @Autowired
+    private RedisService redisService;
+
     @RequestMapping(value = "/all",method = RequestMethod.GET)
-    public Result<User> findAllUser(){
-        List<User>list=userService.queryUsers();
+    public Result<UserModel> findAllUser(){
+        Page page=PageHelper.startPage(1,3);
+        List<UserModel>list=userModelService.queryUsers();
+        PageBean<UserModel> pageBean=new PageBean<UserModel>(1,3,page.getTotal());
+        pageBean.setItems(list);
+
         if(list.size()>0){
-            return ResultUtil.success(1,"查询成功",userService.queryUsers());
+
+            return ResultUtil.success(0,"查询成功",pageBean);
         }
         return ResultUtil.success(1,"没有查到用户");
     }
-    @GetMapping(value = "/getUserInfo")
-    public Result findById(@RequestParam("id") Integer id){
-        User user=userService.queryUserById(id);
-        if(user!=null){
-            return ResultUtil.success(1,"查询成功",user);
+
+    /**
+     * PC端获取用户信息
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/getUserInfo")
+    public Result getUserInfo(HttpServletRequest request){
+        String token=request.getHeader("token");
+        if (StringUtil.isEmpty(token)){
+            return ResultUtil.success(401,"您没有登录");
+        }
+        TokenModel model=null;
+        if(redisService.get("token"+token)!=null){
+            model= (TokenModel) redisService.get("token"+token);
+            return ResultUtil.success(0,"缓存读取成功",model);
         }else{
-            return ResultUtil.success(0,"没找到对应的用户");
-        }
+            String userId= (String) redisService.get(token);
+            model= tokenService.queryTokenById(userId);
+            if(model!=null){
+                redisService.set("token"+token,model);
+                redisService.set(model.getToken(),model.getUserId());
+                return ResultUtil.success(0,"查询成功",model);
+            }
 
-    }
-    @PostMapping(value = "/register")
-    public Result addUser(User user){
-        logger.info("调用用户注册接口开始!");
-        int num=userService.insertUser(user);
-        if(num>0){
-            logger.info("调用用户注册接口结束!");
-            return ResultUtil.success(1,"注册成功");
         }
-        logger.info("调用用户注册接口结束!");
-       return ResultUtil.success(0,"注册失败");
+        return ResultUtil.success(402,"登录信息过期");
     }
-    @PostMapping(value = "/update")
-    public Result updateUser(@RequestBody User user)throws Exception{
-        logger.info("调用用户完善个人信息接口开始!");
-        boolean flag = true;
-        try {
-            MultipartHttpServletRequest re = (MultipartHttpServletRequest) request();
-        } catch (Exception e) {
-            flag = false;
+
+    /**
+     * 小程序获取用户信息
+     * @param request
+     * @param params
+     * @return
+     */
+    @PostMapping(value = "/getToken")
+    public Result getUserToken(HttpServletRequest request,@RequestBody Map<String,String> params){
+        String code = params.get("code");
+        String token=request.getHeader("token");
+        String openId=params.get("openId");
+        if(StringUtils.isEmpty(openId)) {
+            String wxUrl = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + secret + "&js_code=" + code + "&grant_type=authorization_code";
+            String wxJson = HttpRequestUtils.sendGet(wxUrl);
+            JSONObject wxObj = JSON.parseObject(wxJson);
+            openId = wxObj.getString("openid");
         }
-        if (flag) {
-            UpLoadFile upLoadFile = FileUtils.upLoadFileByName(uploadDir,uploadHost, "image", request());
-            if (StringUtils.isNotEmpty(upLoadFile.getUrl())) {
-                user.setHeadImage(upLoadFile.getUrl());
+        TokenModel model=null;
+        if(redisService.get(openId)!=null){
+            model= (TokenModel) redisService.get(openId);
+            return ResultUtil.success(0,"缓存读取成功",model);
+        }else{
+            model= tokenService.queryTokenByOpenid(openId);
+            if(model!=null){
+                redisService.set(openId,model,60*60L);
+                redisService.set(model.getToken(),model.getUserId());//在缓存端用token换取userId;
+                return ResultUtil.success(0,"查询成功",model);
+            }
+
+        }
+        return ResultUtil.success(402,"登录信息已过期");
+    }
+    @PostMapping(value = "/reg")
+    public Result addUser(@RequestBody UserModel user){
+        String openid="";
+        if(StringUtils.isNotEmpty(user.getCode())){
+            String wxUrl="https://api.weixin.qq.com/sns/jscode2session?appid="+appid+"&secret="+secret+"&js_code="+user.getCode()+"&grant_type=authorization_code";
+            String wxJson=HttpRequestUtils.sendGet(wxUrl);
+            JSONObject wxObj = JSON.parseObject(wxJson);
+            openid=wxObj.getString("openid");
+            if(StringUtils.isNotEmpty(openid)){
+                user.setOpenId(openid);
+                user.setSessionKey(wxObj.getString("session_key"));
             }
         }
 
-        int num=userService.updateUser(user);
-        if(num>0){
-            logger.info("调用用户完善个人信息接口结束!");
-            return ResultUtil.success(1,"修改用户信息成功");
+        if(StringUtils.isEmpty(user.getPhoneNum())){
+            return   ResultUtil.success(1,"手机号不能为空");
         }
-        logger.info("调用用户完善个人信息接口结束!");
-        return ResultUtil.success(0,"修改用户信息失败");
+        if(StringUtils.isEmpty(user.getPassword())){
+            return   ResultUtil.success(1,"密码不能为空");
+        }
+        UserModel userModel=userModelService.queryUserByPhone(user.getPhoneNum());
+        if(userModel!=null){
+            if (openid.equals(userModel.getOpenId())){
+                TokenModel model= tokenService.queryTokenByOpenid(userModel.getOpenId());
+                return ResultUtil.success(0,"查询成功",model);
+
+            }else{
+                return ResultUtil.success(1,"该手机号已注册");
+            }
+        }else{
+            TokenModel tokenModel=userModelService.insertUser(user);
+            redisService.set("token"+tokenModel.getToken(),tokenModel,60*60L);
+            redisService.set(tokenModel.getToken(),tokenModel.getUserId());
+            return ResultUtil.success(0,"注册成功",tokenModel);
+        }
 
     }
+
     @PostMapping(value = "/updatePw")
-    public Result updateUserPassword(@RequestBody Map<String,Object> params){
-        String userPassword = params.get("userPassword").toString();
-        String oldPassword = params.get("oldPassword").toString();
-        Integer userId = (Integer) params.get("userId");
-        int num=userService.updateUserPassword(oldPassword,userPassword,userId);
+    public Result updateUserPassword(@RequestBody Map<String,String> params){
+        String userPassword = params.get("userPassword");
+        String oldPassword = params.get("oldPassword");
+        String phoneNum = params.get("phoneNum");
+        int num=userModelService.updateUserPassword(oldPassword,userPassword,phoneNum);
         if (num==1){
-            return ResultUtil.success(1,"修改用户密码成功");
+            return ResultUtil.success(0,"修改用户密码成功");
         }
-        return ResultUtil.success(0,"愿密码不正确");
+        return ResultUtil.success(1,"原密码不正确");
     }
-   /* @PostMapping(value = "/login")
-    public Result loginInfo(@RequestBody Map<String,Object> params){
-        String phone = params.get("phone").toString();
-        String password = params.get("userPassword").toString();
-        int num=userService.loginInfo(phone,password);
-        if (num==1){
-            return ResultUtil.success(1,"登陆成功");
-        }
-        return ResultUtil.success(0,"密码或手机号不正确");
-    }*/
     @PostMapping(value = "/login")
-    public void login(@RequestBody User userEx) {
-        logger.info("调用用户登录接口开始!");
-        String mobile = userEx.getPhone();
-        String password = userEx.getPassword();
-
-        if (StringUtils.isEmpty(mobile)) {
-            logger.info("调用用户登录接口结束!");
-            returnJson(Results.failure(Errors._200201, "手机号"));
-            return;
+    public Result loginInfo(@RequestBody Map<String,String> params){
+        String phone = params.get("phone");
+        String password = params.get("password");
+        TokenModel model=userModelService.loginInfo(phone,password);
+        if (model!=null){
+            redisService.set(model.getOpenId(),model,60*60L);
+            redisService.set(model.getToken(),model.getUserId());
+            redisService.set("token"+model.getToken(),model);
+            return ResultUtil.success(0,"登陆成功",model);
         }
-
-        if (!mobile.matches("^1[3-8]\\d{9}$")) {
-            logger.info("调用用户登录接口结束!");
-            returnJson(Results.failure(Errors._200209, "手机号"));
-            return;
-        }
-
-
-
-        User temp = new User();
-        temp.setPhone(mobile);
-        List<User> userList = userService.queryList(temp);
-        if (null != userList && userList.size() > 0) {
-            User user = userList.get(0);
-            if (user.getPassword().equals(MD5.convertToMD5(password))) {
-                // 保存用户登录 信息
-                Map<String, Object> map = new HashMap<String, Object>();
-                map = setUserCach(user);
-                logger.info("调用用户登录接口结束!");
-                returnJson(Results.success(map));
-                return;
-
-            } else {
-                logger.info("调用用户登录接口结束!");
-                returnJson(Results.failure(Errors._300106));
-                return;
-            }
-        } else {
-            logger.info("调用用户登录接口结束!");
-            returnJson(Results.failure(Errors._300105, "用户"));
-            return;
-        }
-
+        return ResultUtil.success(1,"密码或手机号不正确");
     }
-    // 用户登录信息缓存设置
-    private Map<String, Object> setUserCach(User user) {
-        // 保存用户登录 信息
-        Map<String, Object> map = new HashMap<String, Object>();
-        String userId = user.getUserId().toString();
-        String userIdNew = userId + "-2";
-        String token = "";
-        try {
-            token = Aes.Encrypt(userIdNew + System.currentTimeMillis());
-        } catch (Exception e) {
-            logger.info("调用用户登录接口结束!");
-            e.printStackTrace();
-            returnJson(Results.failure(Errors._100101, "出现异常"));
-        }
-        String string = SystemCache.USER_MAP.get(userIdNew);
-        if (null != string && !"".equals(string)) {
-            SystemCache.USER_TOKEN_MAP.remove(string);
-        }
-        SystemCache.USER_MAP.put(userIdNew, token);
-        SystemCache.USER_TOKEN_MAP.put(token, userId);
-        map.put("token", token);
-        map.put("user", user);
-        return map;
-    }
+
+
 
     @GetMapping(value = "/delete")
-    public Result deleteUser(Integer id){
-        int num=userService.deleteUser(id);
+    public Result deleteUser(String id){
+        int num=userModelService.deleteUser(id);
         if (num==1){
-            return ResultUtil.success(1,"删除用户成功");
+            return ResultUtil.success(0,"删除用户成功");
         }
-        return ResultUtil.success(0,"删除用户失败");
+        return ResultUtil.success(1,"删除用户失败");
     }
 
-    @ResponseBody
-    @RequestMapping(value="getHello")
-    public String getHello(){
-        return "hello";
-    }
 }

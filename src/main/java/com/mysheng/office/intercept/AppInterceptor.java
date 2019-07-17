@@ -1,7 +1,12 @@
 package com.mysheng.office.intercept;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.mysheng.office.base.Results;
 import com.mysheng.office.base.SystemCache;
+import com.mysheng.office.enums.ResultError;
+import com.mysheng.office.exception.CustomException;
+import com.mysheng.office.model.Result;
 import com.mysheng.office.util.JsonUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -18,7 +23,7 @@ public class AppInterceptor extends HandlerInterceptorAdapter {
 	/**
 	 * 业务不需要拦截的方法正则
 	 */
-	public static final String NO_INTERCEPTOR = ".*/((user/login)|(user/register)|(home/index)).*";
+	public static final String NO_INTERCEPTOR = ".*/((user/*)|(home/index)|(classify/list)).*";
 	
 	
 	@Override
@@ -32,29 +37,17 @@ public class AppInterceptor extends HandlerInterceptorAdapter {
 		if(path.matches(NO_INTERCEPTOR) ){
 			return true;
 		}else{//需要拦截的
-			String token=request.getParameter("token");//用户登录标识
+			String token=request.getHeader("token");//用户登录标识
 			if(null == token || "".equals(token)){
-				Results resultAppDto = new Results();
-				resultAppDto.setStatus(Results.FAILURE);
-				resultAppDto.setErrorCode("200201");
-				resultAppDto.setErrorMsg("用户信息错误");
-				String jsonToString = JsonUtil.JsonToString(resultAppDto);
-				response.getWriter().print(jsonToString);
-				response.getWriter().close();
-				return false;
+//				Result result=new Result(401,"请您登陆",null);
+//				JSONObject jsonObj = (JSONObject) JSON.toJSON(result);
+//				JSON json = (JSON) JSON.toJSON(result);
+//				response.getWriter().print(jsonObj);
+//				response.getWriter().close();
+//				return false;
+				throw  new CustomException(ResultError.LOGIN_INFO);
 			}
-			//验证用户登录信息持否正确
-			String string = SystemCache.USER_TOKEN_MAP.get(token);
-			if(null == string || "".equals(token)){//c值错误
-				Results resultAppDto = new Results();
-				resultAppDto.setStatus(Results.FAILURE);
-				resultAppDto.setErrorCode("200201");
-				resultAppDto.setErrorMsg("用户信息错误");
-				String jsonToString = JsonUtil.JsonToString(resultAppDto);
-				response.getWriter().print(jsonToString);
-				response.getWriter().close();
-				return false;
-			}
+
 			return true;
 		}
 		

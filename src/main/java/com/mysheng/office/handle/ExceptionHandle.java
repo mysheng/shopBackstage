@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * 统一异常处理
  */
-@ControllerAdvice
+
 public class ExceptionHandle {
     private final static Logger logger= LoggerFactory.getLogger(ExceptionHandle.class);
     @ExceptionHandler(value = Exception.class)

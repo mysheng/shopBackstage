@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class HttpAspect {
     private final static Logger logger= LoggerFactory.getLogger(HttpAspect.class);
-    @Pointcut("execution(public * com.mysheng.office.controller.UserController.*(..))")
+    @Pointcut("execution(public * com.mysheng.office.controller.*.*(..))")
     public void log(){
         String str="测试";
 
@@ -27,10 +27,10 @@ public class HttpAspect {
     @Before("log()")
     public void doBefore(JoinPoint joinPoint){
         ServletRequestAttributes attr= (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request=attr.getRequest();
-        logger.info("url={}",request.getRequestURL());
-        logger.info("method={}",request.getMethod());
-        logger.info("ip={}",request.getRemoteAddr());
+        HttpServletRequest httpServletRequest=attr.getRequest();
+        logger.info("url={}",httpServletRequest.getRequestURL());
+        logger.info("method={}",httpServletRequest.getMethod());
+        logger.info("ip={}",httpServletRequest.getRemoteAddr());
         logger.info("class_method",joinPoint.getSignature().getDeclaringTypeName()+"."+joinPoint.getSignature().getName());
         logger.info("args={}",joinPoint.getArgs());
 

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mysheng.office.mapper.TokenMapper">
+    <select id="queryToken" resultType="com.mysheng.office.model.TokenModel">
+        SELECT * FROM token
+    </select>
+    <select id="queryTokenById" resultType="com.mysheng.office.model.TokenModel">
+        SELECT * FROM token WHERE user_id=#{userId}
+    </select>
+    <select id="queryUserIdByToken" resultType="com.mysheng.office.model.TokenModel">
+        SELECT user_id FROM token WHERE token=#{token}
+    </select>
+    <select id="queryTokenByOpenid" resultType="com.mysheng.office.model.TokenModel">
+        SELECT * FROM token WHERE open_id=#{openId}
+    </select>
+    <select id="queryTokenByPhone" resultType="com.mysheng.office.model.TokenModel">
+        SELECT * FROM token WHERE phone=#{phone}
+    </select>
+    <insert id="insertToken"  parameterType="com.mysheng.office.model.TokenModel">
+        INSERT INTO token(id,user_id,login_name,phone,avatar,token,status,open_id,comments,create_date) VALUES
+        (#{id},#{userId},#{loginName},#{phone},#{avatar},#{token},#{status},#{openId},#{comments},#{createDate})
+    </insert>
+    <update id="updateToken" parameterType="com.mysheng.office.model.TokenModel" >
+        UPDATE token
+        <set>
+            <if test="loginName!=null">login_name=#{loginName},</if>
+            <if test="avatar!=null">token=#{avatar},</if>
+            <if test="token!=null">token=#{token},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="openId!=null">open_id=#{openId},</if>
+            <if test="comments!=null">comments=#{comments},</if>
+        </set>
+
+        WHERE phone=#{phone}
+    </update>
+    <delete id="deleteToken" >
+        DELETE FROM token WHERE user_id=#{userId}
+    </delete>
+</mapper>

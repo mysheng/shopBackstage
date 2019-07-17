@@ -13,6 +13,17 @@ spring:
     password: mysheng
   mvc:
     static-path-pattern:
+  redis:
+    database: 0 # Redis数据库索引（默认为0）
+    host: 127.0.0.1 # Redis服务器地址
+    port: 6379 # Redis服务器连接端口
+    password:   # Redis服务器连接密码（默认为空）
+      pool:
+        max-active: 20 # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1 # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 8 # 连接池中的最大空闲连接
+        min-idle: 0 # 连接池中的最小空闲连接
+    timeout: 5000
 
 mybatis:
   type-aliases-package: com.mysheng.office.model
@@ -22,9 +33,12 @@ server:
   port: 9090
   servlet:
     context-path: /office
-
 logging:
+  config: classpath:logback-boot.xml
   level:
    com.mysheng.office.mapper: trace
 spring.mvc.static-path-pattern: /image/**
 spring.resources.static-locations: file:/Users/mayansheng/mysheng/
+wx:
+  appid: wx63200a11133b5e91
+  secret: 9cac926c6c50761ee4c55793e7f74f40

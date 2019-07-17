@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mysheng.office.mapper.GoodsNormsMapper">
+    <select id="queryGoodsNorms"  resultType="com.mysheng.office.model.GoodsNorms">
+        SELECT * FROM goods_norms WHERE  goods_id=#{goodsId}
+    </select>
+    <select id="queryGoodsNormsByCode" parameterType="String" resultType="com.mysheng.office.model.GoodsNorms">
+        SELECT * FROM goods_norms WHERE goods_id=#{goodsId} AND norms_code=#{normsCode}
+    </select>
+
+    <insert id="insertGoodsNorms"  parameterType="com.mysheng.office.model.GoodsNorms">
+        INSERT INTO goods_norms(id,goods_id,norms_name,norms_code,
+        norms_value,original_price,goods_price,goods_stock,comments) VALUES
+        (#{id}, #{goodsId},#{normsName},#{normsCode},#{normsValue},
+       #{originalPrice},#{goodsPrice},#{goodsStock}#{comments})
+    </insert>
+    <update id="updateGoodsNorms" parameterType="com.mysheng.office.model.GoodsNorms">
+        UPDATE goods_norms
+        <set>
+            <if test="normsName!=null">norms_name=#{normsName},</if>
+            <if test="normsCode!=null">norms_code=#{normsCode},</if>
+            <if test="normsValue!=null">norms_value=#{normsValue},</if>
+            <if test="originalPrice!=null">original_price=#{originalPrice},</if>
+            <if test="goodsPrice!=null">goods_price=#{goodsPrice},</if>
+            <if test="goodsStock!=null">goods_stock=#{goodsStock},</if>
+            <if test="comments!=null">comments=#{comments}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+    <delete id="deleteGoodsNorms" parameterType="String">
+        DELETE FROM goods_norms WHERE id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

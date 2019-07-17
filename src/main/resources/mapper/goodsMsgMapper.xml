@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mysheng.office.mapper.GoodsMsgMapper">
+    <select id="queryGoodsMsg"  resultType="com.mysheng.office.model.GoodsMsg">
+        SELECT * FROM goods_msg
+    </select>
+    <select id="queryGoodsMsgById"  resultType="com.mysheng.office.model.GoodsMsg">
+        SELECT * FROM goods_msg WHERE  id=#{id}
+    </select>
+    <select id="queryGoodsMsgByName" parameterType="String" resultType="com.mysheng.office.model.GoodsMsg">
+        SELECT * FROM goods_msg WHERE goods_name LIKE concat('%',#{searchName},'%')
+    </select>
+    <select id="queryGoodsMsgByPinyin" parameterType="String" resultType="com.mysheng.office.model.GoodsMsg">
+        SELECT * FROM goods_msg WHERE goods_pinyin LIKE concat('%',#{searchName},'%')
+    </select>
+    <insert id="insertGoodsMsg"  parameterType="com.mysheng.office.model.GoodsMsg">
+        INSERT INTO goods_msg(id,shop_id,user_id,goods_brand,goods_code,goods_name,goods_pinyin,goods_title,
+        goods_state,examine_state,goods_price,one_code,two_code,three_code,sales_volume,comments) VALUES
+        (#{id}, #{shopId},#{userId},#{goodsBrand},#{goodsCode},#{goodsName},#{goodsPinyin},#{goodsTitle},
+        #{goodsState},#{examineState},#{goodsPrice},#{oneCode},#{twoCode},#{threeCode},#{salesVolume},#{comments})
+    </insert>
+    <update id="updateGoodsMsg" parameterType="com.mysheng.office.model.GoodsMsg">
+        UPDATE goods_msg
+        <set>
+            <if test="userId!=null">user_id=#{userId},</if>
+            <if test="goodsBrand!=null">goods_brand=#{goodsBrand},</if>
+            <if test="goodsCode!=null">goods_code=#{goodsCode},</if>
+            <if test="goodsName!=null">goods_name=#{goodsName},</if>
+            <if test="goodsPinyin!=null">goods_pinyin=#{goodsPinyin},</if>
+            <if test="goodsTitle!=null">goods_title=#{goodsTitle},</if>
+            <if test="goodsState!=null">goods_state=#{goodsState},</if>
+            <if test="examineState!=null">examine_state=#{examineState},</if>
+            <if test="goodsPrice!=null">goods_price=#{goodsPrice},</if>
+            <if test="oldPrice!=null">old_price=#{oldPrice},</if>
+            <if test="oneCode!=null">one_code=#{oneCode},</if>
+            <if test="twoCode!=null">two_code=#{twoCode},</if>
+            <if test="threeCode!=null">three_code=#{threeCode},</if>
+            <if test="salesVolume!=null">sales_volume=#{salesVolume},</if>
+            <if test="comments!=null">comments=#{comments}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+    <delete id="deleteGoodsMsg" parameterType="String">
+        DELETE FROM goods_msg WHERE id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

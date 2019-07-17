@@ -1,13 +1,13 @@
 package com.mysheng.office.exception;
 
-import com.mysheng.office.enums.ResultEnum;
+import com.mysheng.office.enums.ResultError;
 
 /**
  * 通用异常处理
  */
 public class CommentException extends RuntimeException {
     private Integer code;
-    public CommentException(ResultEnum re){
+    public CommentException(ResultError re){
         super(re.getMessage());
         this.code=re.getCode();
     }

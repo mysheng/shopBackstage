@@ -6,79 +6,40 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Goods implements Serializable {
-    private Integer goodsId;
-    private String goodsType;
-    private String sellerNum;
-    private String goodsName;
+    private String id;
     private String goodsNum;
-    private float price;
-    private float oldPrice;
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
-    private Date createDate;
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy/MM/dd HH:mm:ss")
-    private Date updateDate;
-    private String goodsDescribe;
-    private String norms;
-    private String imageUrl;
-    private Integer repertory;
+    private String goodsName;
+    private String goodsPinyin;
+    private String shopId;
+    private String typeCode;
+    private String typeName;
+    private String goodsNorms;
+    private String goodsPrice;
+    private String oldPrice;
+    private String couponId;
+    private boolean coupon;
+    private boolean reduce;
+    private double reduceAmount;
+    private double reduceLimit;
     private Integer status;
-    private Integer salesVolume;
+    private Integer stock;
+    private Integer volume;
+    private String goodsUnit;
+    private String createUserId;
+    private String updateUserId;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
+    private Date createDate;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
+    private Date updateDate;
+    private String comments;
 
-    public Integer getRepertory() {
-        return repertory;
+
+    public String getId() {
+        return id;
     }
 
-    public void setRepertory(Integer repertory) {
-        this.repertory = repertory;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-
-    public String getGoodsDescribe() {
-        return goodsDescribe;
-    }
-
-    public void setGoodsDescribe(String goodsDescribe) {
-        this.goodsDescribe = goodsDescribe;
-    }
-
-    public Integer getGoodsId() {
-        return goodsId;
-    }
-
-    public void setGoodsId(Integer goodsId) {
-        this.goodsId = goodsId;
-    }
-
-    public String getGoodsType() {
-        return goodsType;
-    }
-
-    public void setGoodsType(String goodsType) {
-        this.goodsType = goodsType;
-    }
-
-    public String getSellerNum() {
-        return sellerNum;
-    }
-
-    public void setSellerNum(String sellerNum) {
-        this.sellerNum = sellerNum;
-    }
-
-    public String getGoodsName() {
-        return goodsName;
-    }
-
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getGoodsNum() {
@@ -89,20 +50,160 @@ public class Goods implements Serializable {
         this.goodsNum = goodsNum;
     }
 
-    public float getPrice() {
-        return price;
+    public String getGoodsName() {
+        return goodsName;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
     }
 
-    public float getOldPrice() {
+    public String getGoodsPinyin() {
+        return goodsPinyin;
+    }
+
+    public void setGoodsPinyin(String goodsPinyin) {
+        this.goodsPinyin = goodsPinyin;
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
+    }
+
+    public String getTypeCode() {
+        return typeCode;
+    }
+
+    public void setTypeCode(String typeCode) {
+        this.typeCode = typeCode;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+
+
+    public String getGoodsUnit() {
+        return goodsUnit;
+    }
+
+    public void setGoodsUnit(String goodsUnit) {
+        this.goodsUnit = goodsUnit;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getGoodsPrice() {
+        return goodsPrice;
+    }
+
+    public void setGoodsPrice(String goodsPrice) {
+        this.goodsPrice = goodsPrice;
+    }
+
+    public String getOldPrice() {
         return oldPrice;
     }
 
-    public void setOldPrice(float oldPrice) {
+    public void setOldPrice(String oldPrice) {
         this.oldPrice = oldPrice;
+    }
+
+    public String getCouponId() {
+        return couponId;
+    }
+
+    public void setCouponId(String couponId) {
+        this.couponId = couponId;
+    }
+
+
+    public boolean isCoupon() {
+        return coupon;
+    }
+
+    public void setCoupon(boolean coupon) {
+        this.coupon = coupon;
+    }
+
+    public boolean isReduce() {
+        return reduce;
+    }
+
+    public void setReduce(boolean reduce) {
+        this.reduce = reduce;
+    }
+
+    public double getReduceAmount() {
+        return reduceAmount;
+    }
+
+    public void setReduceAmount(double reduceAmount) {
+        this.reduceAmount = reduceAmount;
+    }
+
+    public double getReduceLimit() {
+        return reduceLimit;
+    }
+
+    public void setReduceLimit(double reduceLimit) {
+        this.reduceLimit = reduceLimit;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
+    public Integer getVolume() {
+        return volume;
+    }
+
+    public void setVolume(Integer volume) {
+        this.volume = volume;
+    }
+
+    public String getGoodsNorms() {
+        return goodsNorms;
+    }
+
+    public void setGoodsNorms(String goodsNorms) {
+        this.goodsNorms = goodsNorms;
+    }
+
+    public String getCreateUserId() {
+        return createUserId;
+    }
+
+
+    public void setCreateUserId(String createUserId) {
+        this.createUserId = createUserId;
+    }
+
+    public String getUpdateUserId() {
+        return updateUserId;
+    }
+
+    public void setUpdateUserId(String updateUserId) {
+        this.updateUserId = updateUserId;
     }
 
     public Date getCreateDate() {
@@ -121,29 +222,12 @@ public class Goods implements Serializable {
         this.updateDate = updateDate;
     }
 
-
-    public String getNorms() {
-        return norms;
+    public String getComments() {
+        return comments;
     }
 
-    public void setNorms(String norms) {
-        this.norms = norms;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public Integer getSalesVolume() {
-        return salesVolume;
-    }
-
-    public void setSalesVolume(Integer salesVolume) {
-        this.salesVolume = salesVolume;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 }
 

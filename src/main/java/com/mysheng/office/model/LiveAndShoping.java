@@ -1,5 +1,8 @@
 package com.mysheng.office.model;
 
+/**
+ *
+ */
 public class LiveAndShoping {
     private Integer id;
     private Integer classId;

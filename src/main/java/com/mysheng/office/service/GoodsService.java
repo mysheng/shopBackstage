@@ -1,51 +1,102 @@
 package com.mysheng.office.service;
 
 import com.mysheng.office.model.Goods;
+import com.mysheng.office.model.GoodsData;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface GoodsService {
     /**
-     * 查询全部用户
+     * 查询全部商品
      * @return
      */
     List<Goods> queryGoods();
 
     /**
-     * 根据用户id查询用户
+     *
+     * @param searchName
+     * @return
+     */
+    List<Goods> searchGoods(String searchName);
+
+    /**
+     * 根据商品id查询商品
      * @param goodsId
      * @return
      */
-    Goods queryGoodsById(int goodsId);
+    Goods queryGoodsById(String goodsId);
 
     /**
-     * 新增用户
+     * 新增商品
      * @param goods
      * @return
      */
     int insertGoods(Goods goods);
 
     /**
-     * 根据用户id修改用户信息
+     * 根据商品id修改商品信息
      * @param goods
      * @return
      */
     int updateGoods(Goods goods);
 
     /**
-     * 根据用户id删除用户
+     * 根据商品id删除商品
      * @param goodsId
      * @return
      */
-    int deleteGoods(int[] goodsId);
+    int deleteGoods(List<String> goodsId);
 
     /**
      * 更具id查询图片地址
      * @param goodsId
      * @return
      */
-    String findGoodsImageUrl(int goodsId);
+    String findGoodsImageUrl(String goodsId);
 
-    List<Goods> queryGoodsPage(@Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize);
+    /**
+     * 增加商品库商品
+     * @param goodsData
+     * @return
+     */
+    int insertGoodsData(GoodsData goodsData);
+
+    /**
+     * 查询商品库所有商品
+     * @return
+     */
+    List<GoodsData>queryGoodsData(String goodsPinyin,String goodsNorms,String goodsUnit);
+    /**
+     *
+     * @param searchName
+     * @return
+     */
+    List<GoodsData> searchGoodsData(String searchName);
+    /**
+     * 根据商品库id查询商品
+     * @param goodsId
+     * @return
+     */
+    GoodsData queryGoodsDataById(String goodsId);
+    /**
+     * 根据商品库id修改商品信息
+     * @param goodsData
+     * @return
+     */
+    int updateGoodsData(GoodsData goodsData);
+
+    /**
+     * 根据商品id删除商品
+     * @param goodsId
+     * @return
+     */
+    int deleteGoodsData(List<String> goodsId);
+
+    /**
+     * 根据商品库条形码查询商品
+     * @param goodsCode
+     * @return
+     */
+    GoodsData queryGoodsDataByCode(String goodsCode);
 }
